@@ -1,0 +1,76 @@
+name: musicserv
+version: "beta"
+author: FeistyKit <eeveebeevee33@gmail.com>
+about: A simple command-line music player utility.
+args: 
+    - foreground:
+        help: whether to daemonize or not
+        required: false
+        short: -F 
+        long: --foreground
+    - socket:
+        short: -f 
+        help: the socket to use for the server
+        value_name: SOCKET
+        takes_value: true
+        default_value: "/tmp/musicserv.socket"
+subcommands:
+  - start:
+      short: s 
+      long: start 
+      about: starts the server
+  - stop:
+      short: q
+      long: stop 
+      about: stops the server
+
+  - add:
+      short: a 
+      long: add 
+      about: adds a file or folder to the queue
+      args:
+        - to_add:
+            takes_value: true
+            value_name: TO_ADD
+            multiple: true
+            required: true
+            help: "The files or folders to add"
+        - recursive:
+            short: -r 
+            long: recursive 
+            help: "Recurse through folders"
+  - pause:
+      short: p 
+      long: pause 
+      about: "Pause"
+  - unpause:
+      short: u
+      long: unpause
+      about: "Play"
+  - toggle:
+      short: t 
+      long: toggle 
+      about: "Toggle pause-play" 
+  - skip:
+      short: N 
+      long: skip 
+      about: "Skip the currently-playing song"
+  - clear: 
+      short: c 
+      long: clear 
+      about: "Clear the queue then skip to the end of this song."
+  - loop:
+      short: l 
+      long: loop 
+      about: "Toggle whether the server will loop the currently-playing songs or not."
+  - set-volume:
+      short: sv 
+      long: set-volume 
+      about: "Set the server volume"
+      args:
+        - new_vol:
+              takes_value: true
+              value_name: VOL 
+              required: true
+              help: "the volume to set"
+

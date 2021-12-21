@@ -1,18 +1,18 @@
-use std::{collections::VecDeque, fmt::Debug, fs::File, io::BufReader, thread::sleep, time::Duration};
+use std::{collections::VecDeque, fs::File, io::BufReader};
 
 use rodio::Sink;
-use unix_ipc::{channel, Bootstrapper, Receiver, Sender};
+use unix_ipc::{channel, Bootstrapper};
 
 use crate::messages::{ClientMsgVariant, ToClientMsg, ToServerMsg};
 
 pub fn server_entry_point(mut boot: Bootstrapper<ToClientMsg>) -> i32 {
-    let queue: VecDeque<BufReader<File>> = VecDeque::new();
+    let queue: VecDeque<(BufReader<File>, String)> = VecDeque::new();
     let (sink, stream) = Sink::new_idle();
     loop {
         let (tx, rx) = channel().unwrap();
         boot.send(ToClientMsg {
             var: ClientMsgVariant::JoinHandle,
-            sender: tx,
+            sender: Some(tx),
         })
         .unwrap();
         let received = rx.recv().unwrap();

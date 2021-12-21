@@ -1,10 +1,11 @@
-use std::{error::Error, fmt::Debug, process::exit};
+use std::process::exit;
 
 use clap::{load_yaml, App};
 use messages::ToClientMsg;
 use nix::unistd::daemon;
 use server::server_entry_point;
-use unix_ipc::{Bootstrapper, Receiver, Sender};
+use unix_ipc::Receiver;
+use unix_ipc::Bootstrapper;
 
 use crate::messages::ToServerMsg;
 
@@ -73,7 +74,7 @@ fn logic() -> i32 {
 fn send_message(serv_path: &str, msg: ToServerMsg) {
     let recv = get_receiver(serv_path);
     let t: ToClientMsg = recv.recv().unwrap();
-    t.sender.send(msg).unwrap();
+    t.sender.unwrap().send(msg).unwrap();
 }
 
 fn get_receiver(serv_path: &str) -> Receiver<ToClientMsg> {

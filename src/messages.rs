@@ -19,7 +19,7 @@ pub enum ToServerMsg {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ToClientMsg {
     pub var: ClientMsgVariant,
-    pub sender: Sender<ToServerMsg>,
+    pub sender: Option<Sender<ToServerMsg>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
